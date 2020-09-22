@@ -117,18 +117,22 @@ switch ($modx->event->name) {
                 ]
             ];
 
-            // Set the pagetitle and longtitle to the fullname
+           // Set the pagetitle and longtitle to the fullname
             // Change parent to be Artists parent ID
-            // template_id
+            // template to point to the template
+            // menuindex is set based on the first three letters of the name
+            $fullname = strtoupper($user->get('fullname'));
+            $mi = ord(substr($fullname, 0, 1)) * 10000 + ord(substr($fullname, 1, 1)) * 100 + ord(substr($fullname, 2, 1));
             $resource = [
                 'pagetitle' => $user->get('fullname'),
                 'longtitle' => $user->get('fullname'),
                 'alias' => $resource_alias,
-                'parent' => 2,
-                'profile template_id' => 1,
+                'parent' => 14,
+                'template' => 4,
                 'published' => 1,
                 'class_key' => 'mgResource',
-                'resource_groups' => json_encode($userresource_group)];
+                'resource_groups' => json_encode($userresource_group),
+                'menuindex' => $mi];
 
             $response = $modx->runProcessor('resource/create', $resource);
 
